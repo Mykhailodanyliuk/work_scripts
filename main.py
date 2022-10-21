@@ -12,6 +12,7 @@ organizations = collection.distinct(
 for organization in list(organizations):
     # organizations_collection.insert_one({"organization": organization})
     list_organization_trials = list(collection.find({'FullStudy.Study.ProtocolSection.IdentificationModule.Organization.OrgFullName': organization}))
-    for i in list_organization_trials:
+    organization_trials = [trial.get('FullStudy').get('Study').get('ProtocolSection').get('IdentificationModule').get('NCTId') for trial in list_organization_trials]
+    for i in organization_trials:
         print(i)
-    updated_clinical_trials.insert_one({'organization': organization, 'Organization_trials': list_organization_trials})
+    updated_clinical_trials.insert_one({'organization': organization, 'Organization_trials': organization_trials})
